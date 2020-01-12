@@ -2,9 +2,27 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
+
+
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://node-shop:" + process.env.MONGO_ATLAS_PW + "@node-rest-shop-vjqqw.mongodb.net/test?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true,  useUnifiedTopology: true});
+client.connect(err => {
+    const collection = client.db("test").collection("devices");
+    // perform actions on the collection object
+    client.close();
+});
+
+
+// mongoose.connect(
+//     'mongodb+srv://node-shop:' + process.env.MONGO_ATLAS_PW + '@node-rest-shop-vjqqw.mongodb.net/test?retryWrites=true&w=majority',
+//     {
+//     useMongoClient: true
+// })
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
